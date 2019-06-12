@@ -3,20 +3,32 @@
 
 # remez.jl - implementation of the Remez algorithm for polynomial approximation
 #
-# Copyright (c) 2015, Arm Limited.
-# SPDX-License-Identifier: Apache-2.0
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright (c) 2015-2018, Arm Limited.
+# SPDX-License-Identifier: MIT
+
+import Base.\
+
+# ----------------------------------------------------------------------
+# Helper functions to cope with different Julia versions.
+if VERSION >= v"0.7.0"
+    array1d(T, d) = Array{T, 1}(undef, d)
+    array2d(T, d1, d2) = Array{T, 2}(undef, d1, d2)
+else
+    array1d(T, d) = Array(T, d)
+    array2d(T, d1, d2) = Array(T, d1, d2)
+end
+if VERSION < v"0.5.0"
+    String = ASCIIString
+end
+if VERSION >= v"0.6.0"
+    # Use Base.invokelatest to run functions made using eval(), to
+    # avoid "world age" error
+    run(f, x...) = Base.invokelatest(f, x...)
+else
+    # Prior to 0.6.0, invokelatest doesn't exist (but fortunately the
+    # world age problem also doesn't seem to exist)
+    run(f, x...) = f(x...)
+end
 
 import Base.\
 
