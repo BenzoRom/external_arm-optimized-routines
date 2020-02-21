@@ -26,10 +26,20 @@ cc_defaults {
     local_include_dirs: ["math/include"],
 }
 
-cc_library {
-    name: "libarm-optimized-routines-math",
+cc_defaults {
+    name: "libarm-optimized-routines-defaults",
     defaults: ["arm-optimized-routines-defaults"],
     recovery_available: true,
+
+    stl: "none",
+    static: {
+        system_shared_libs: [],
+    },
+}
+
+cc_library {
+    name: "libarm-optimized-routines-math",
+    defaults: ["libarm-optimized-routines-defaults"],
     srcs: [
         "math/*.c",
     ],
@@ -51,9 +61,47 @@ cc_library {
             enabled: true,
         },
     },
-    stl: "none",
-    static: {
-        system_shared_libs: [],
+}
+
+cc_library {
+    name: "libarm-optimized-routines-string",
+    defaults: ["libarm-optimized-routines-defaults"],
+
+    arch: {
+        arm64: {
+            srcs: [
+                "string/aarch64/memchr.S",
+                "string/aarch64/memcmp.S",
+                "string/aarch64/strchrnul.S",
+                "string/aarch64/strchr.S",
+                "string/aarch64/strcmp.S",
+                "string/aarch64/strcpy.S",
+                "string/aarch64/strlen-mte.S",
+                "string/aarch64/strlen.S",
+                "string/aarch64/strncmp.S",
+                "string/aarch64/strnlen.S",
+                "string/aarch64/strrchr.S",
+            ],
+            asflags: [
+                "-D__memcmp_aarch64=memcmp",
+            ]
+        },
+    },
+}
+
+cc_library {
+    name: "libarm-optimized-routines-stpcpy",
+    defaults: ["libarm-optimized-routines-defaults"],
+
+    arch: {
+        arm64: {
+            srcs: [
+                "string/aarch64/strcpy.S",
+            ],
+            asflags: [
+                "-DBUILD_STPCPY",
+            ]
+        },
     },
 }
 
