@@ -72,7 +72,9 @@ cc_library {
             srcs: [
                 "string/aarch64/memchr.S",
                 "string/aarch64/memcmp.S",
+                "string/aarch64/stpcpy.S",
                 "string/aarch64/strchrnul.S",
+                "string/aarch64/strchr-mte.S",
                 "string/aarch64/strchr.S",
                 "string/aarch64/strcmp.S",
                 "string/aarch64/strcpy.S",
@@ -84,22 +86,6 @@ cc_library {
             ],
             asflags: [
                 "-D__memcmp_aarch64=memcmp",
-            ]
-        },
-    },
-}
-
-cc_library {
-    name: "libarm-optimized-routines-stpcpy",
-    defaults: ["libarm-optimized-routines-defaults"],
-
-    arch: {
-        arm64: {
-            srcs: [
-                "string/aarch64/strcpy.S",
-            ],
-            asflags: [
-                "-DBUILD_STPCPY",
             ]
         },
     },
